@@ -2,12 +2,14 @@ package com.asif.inventoryservice.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "t_inventory")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Inventory {
 
     @Id
