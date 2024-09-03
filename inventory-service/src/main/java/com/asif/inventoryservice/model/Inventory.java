@@ -1,23 +1,18 @@
-package com.asif.orderservice.model;
+package com.asif.inventoryservice.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_order_line_items")
-@Getter
-@Setter
+@Table(name = "t_inventory")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class OrderLineItems {
+public class Inventory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String skuCode;
-    private BigDecimal price;
     private Integer quantity;
 }
