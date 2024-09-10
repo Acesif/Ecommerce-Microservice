@@ -2,7 +2,7 @@ spring:
   application:
     name: inventory-service
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/inventory?createDatabaseIfNotExist=true
+    url: jdbc:mysql://127.0.0.1:3307/inventory?createDatabaseIfNotExist=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
