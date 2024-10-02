@@ -14,9 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public void placeOrder(OrderRequest orderRequest) {
+    public Boolean placeOrder(OrderRequest orderRequest) {
         Order order = Order.builder()
                 .orderNumber(UUID.randomUUID().toString())
                 .orderLineItemsList(orderRequest.
@@ -43,17 +42,29 @@ public class OrderService {
 
         InventoryResponse[] inventoryResponses = webClient.get()
                 .uri("http://localhost:8082/api/inventory",
-                        uriBuilder -> uriBuilder.queryParam("skuCode",skucodes).build())
+                        uriBuilder -> uriBuilder.queryParam("skuCode",skucodes)
+                                .build())
                 .retrieve()
                 .bodyToMono(InventoryResponse[].class)
                 .block();
 
-        boolean result = Arrays.stream(inventoryResponses).allMatch(InventoryResponse::isInStock);
+        assert inventoryResponses != null;
 
-        if(result){
+        Map<String, InventoryResponse> inventoryMap = Arrays.stream(inventoryResponses)
+                .collect(Collectors.toMap(InventoryResponse::getSkuCode, response -> response));
+
+        boolean allItemsAvailable = order.getOrderLineItemsList().stream()
+                .allMatch(orderLineItem -> {
+                    InventoryResponse inventoryResponse = inventoryMap.get(orderLineItem.getSkuCode());
+                    return orderLineItem.getQuantity() <= inventoryResponse.getAvailableQuantity();
+                });
+
+        if(allItemsAvailable){
             orderRepository.save(order);
+            return true;
         } else {
             log.error("Product not found in inventory");
+            return false;
         }
     }
     private OrderLineItems mapFromDto(OrderLineItemsDto orderLineItemsDto){

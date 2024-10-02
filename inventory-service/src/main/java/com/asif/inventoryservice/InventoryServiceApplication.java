@@ -23,7 +23,7 @@ public class InventoryServiceApplication {
                     .build();
             Inventory item2 = Inventory.builder()
                     .skuCode("gyaat")
-                    .quantity(109)
+                    .quantity(2)
                     .build();
             inventoryRepository.save(item1);
             inventoryRepository.save(item2);
