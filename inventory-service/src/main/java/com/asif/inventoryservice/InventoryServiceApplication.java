@@ -7,6 +7,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 @SpringBootApplication
 public class InventoryServiceApplication {
 
@@ -16,18 +19,21 @@ public class InventoryServiceApplication {
 
     @Bean
     public CommandLineRunner loadData(InventoryRepository inventoryRepository) {
-        return args -> {
-            Inventory item1 = Inventory.builder()
-                    .skuCode("amoogus")
-                    .quantity(100)
-                    .build();
-            Inventory item2 = Inventory.builder()
-                    .skuCode("gyaat")
-                    .quantity(2)
-                    .build();
-            inventoryRepository.save(item1);
-            inventoryRepository.save(item2);
-        };
+        if(inventoryRepository.findAllBySkuCode(Arrays.asList("amoogus","gyaat")).isEmpty()){
+            return args -> {
+                Inventory item1 = Inventory.builder()
+                        .skuCode("amoogus")
+                        .quantity(100)
+                        .build();
+                Inventory item2 = Inventory.builder()
+                        .skuCode("gyaat")
+                        .quantity(2)
+                        .build();
+                inventoryRepository.save(item1);
+                inventoryRepository.save(item2);
+            };
+        }
+        return null;
     }
 
 }

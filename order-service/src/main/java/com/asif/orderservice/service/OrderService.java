@@ -1,14 +1,12 @@
 package com.asif.orderservice.service;
 
-import com.asif.orderservice.config.WebClientConfig;
-import com.asif.orderservice.dto.InventoryResponse;
 import com.asif.orderservice.dto.OrderLineItemsDto;
 import com.asif.orderservice.dto.OrderRequest;
 import com.asif.orderservice.model.Order;
 import com.asif.orderservice.model.OrderLineItems;
 import com.asif.orderservice.repository.OrderRepository;
+import dto.InventoryResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +39,7 @@ public class OrderService {
         List<String> skucodes = order.getOrderLineItemsList().stream().map(OrderLineItems::getSkuCode).toList();
 
         InventoryResponse[] inventoryResponses = webClient.get()
-                .uri("http://localhost:8082/api/inventory",
+                .uri("http://inventory-service/api/inventory",
                         uriBuilder -> uriBuilder.queryParam("skuCode",skucodes)
                                 .build())
                 .retrieve()

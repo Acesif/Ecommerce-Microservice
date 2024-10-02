@@ -1,14 +1,12 @@
 package com.asif.inventoryservice.service;
 
-import com.asif.inventoryservice.dto.InventoryResponse;
-import com.asif.inventoryservice.model.Inventory;
 import com.asif.inventoryservice.repository.InventoryRepository;
+import dto.InventoryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -1,3 +1,5 @@
 rootProject.name = 'Ecommerce-Microservices'
 include 'order-service', 'inventory-service', 'product-service'
+include 'commons'
+include 'service-discovery'
 
